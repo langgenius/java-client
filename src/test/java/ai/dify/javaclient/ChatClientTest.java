@@ -59,7 +59,7 @@ class ChatClientTest {
     public void testCreateChatMessage() throws Exception {
         when(mockResponse.isSuccessful()).thenReturn(true);
 
-        chatClient.createChatMessage("testInputs", "testQuery", "testUser", true, "conversation123");
+        chatClient.createChatMessage("{}", "testQuery", "testUser", true, "conversation123");
 
         verify(mockClient).newCall(any(Request.class));
         verify(mockCall).execute();
