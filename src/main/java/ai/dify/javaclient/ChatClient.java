@@ -1,5 +1,6 @@
 package ai.dify.javaclient;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import okhttp3.*;
 
@@ -50,7 +51,7 @@ public class ChatClient extends DifyClient {
     /**
      * Creates a new chat message.
      *
-     * @param inputs         The chat message inputs.
+     * @param inputs         The chat message inputs. Must be a valid JSON object str.
      * @param query          The query associated with the chat message.
      * @param user           The user associated with the chat message.
      * @param stream         Whether to use streaming response mode.
@@ -59,8 +60,12 @@ public class ChatClient extends DifyClient {
      * @throws DifyClientException If an error occurs while sending the request.
      */
     public Response createChatMessage(String inputs, String query, String user, boolean stream, String conversation_id) throws DifyClientException {
+        assert JSON.isValidObject(inputs);
+        assert query != null && !query.isEmpty();
+        assert user != null ;
+
         JSONObject json = new JSONObject();
-        json.put("inputs", inputs);
+        json.put("inputs", JSON.parseObject(inputs));
         json.put("query", query);
         json.put("user", user);
         json.put("response_mode", stream ? "streaming" : "blocking");
