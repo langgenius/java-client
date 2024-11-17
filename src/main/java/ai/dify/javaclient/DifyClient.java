@@ -6,6 +6,8 @@ import com.alibaba.fastjson2.JSONObject;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 /**
  * This class serves as a client for interacting with the Dify API.
  * It provides methods for sending various types of requests to the API.
@@ -38,13 +40,29 @@ public class DifyClient {
     /**
      * Constructs a new DifyClient with the provided API key and base URL.
      *
-     * @param apiKey   The API key to use for authentication.
-     * @param baseUrl  The base URL of the Dify API.
+     * @param apiKey  The API key to use for authentication.
+     * @param baseUrl The base URL of the Dify API.
      */
     public DifyClient(String apiKey, String baseUrl) {
+        this(apiKey, baseUrl, 1L, TimeUnit.HOURS);
+    }
+
+    /**
+     * Constructs a new DifyClient with the provided API key and base URL.
+     *
+     * @param apiKey  The API key to use for authentication.
+     * @param baseUrl The base URL of the Dify API.
+     * @param timeout The timeout number
+     * @param timeOutUnit The timeout unit
+     */
+    public DifyClient(String apiKey, String baseUrl, Long timeout, TimeUnit timeOutUnit) {
         this.apiKey = apiKey;
         this.baseUrl = baseUrl;
-        this.client = new OkHttpClient();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        this.client = builder.connectTimeout(timeout, timeOutUnit)
+                .readTimeout(timeout, timeOutUnit)
+                .writeTimeout(timeout, timeOutUnit)
+                .build();
     }
 
     /**

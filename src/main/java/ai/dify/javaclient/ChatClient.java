@@ -60,8 +60,9 @@ public class ChatClient extends DifyClient {
      */
     public Response createChatMessage(String inputs, String query, String user, boolean stream, String conversation_id) throws DifyClientException {
         JSONObject json = new JSONObject();
-        json.put("inputs", inputs);
-        json.put("query", query);
+        JSONObject inputsJson = new JSONObject();
+        inputsJson.put("query", query);
+        json.put("inputs", inputsJson);
         json.put("user", user);
         json.put("response_mode", stream ? "streaming" : "blocking");
         if (conversation_id != null && !conversation_id.isEmpty()) {
