@@ -38,8 +38,9 @@ public class CompletionClient extends DifyClient {
      */
     public Response createCompletionMessage(String inputs, String query, String user, boolean stream) throws DifyClientException {
         JSONObject json = new JSONObject();
-        json.put("inputs", inputs);
-        json.put("query", query);
+        JSONObject inputsJson = new JSONObject();
+        inputsJson.put("query", query);
+        json.put("inputs", inputsJson);
         json.put("user", user);
         json.put("response_mode", stream ? "streaming" : "blocking");
 
